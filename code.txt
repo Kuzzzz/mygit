@@ -1,0 +1,107 @@
+1.ZZZZZZZZLO；ftrgggggggggggggggt求数组内子数组的最大和：
+思路：申请2个临时变量，一个sum一个maxsum，maxsum
+1.当所有数为非正数时，最大值则是最大的子数组和
+2.从第一个是正数的值开始往后累加，并记录下累加得到的最大值
+3.当累加的值出现负数，说明有效的子数组已经结束，开始下一组的累加和最大值比较，到数组结束求出
+最大的和
+
+int maxSubArray(int []num){
+    int sum = 0;
+    int maxSum = num[0];
+    for(int i = 0;i<num.length;i++){
+        if(maxSum<=0){
+          maxSum = maxSum<num[i] ? num[i] : maxSum ;
+          sum = maxSum > 0 ? maxSum : 0;
+        }else{
+                sum += num[i];
+                maxSum = maxSum > sum ? maxSum : sum;
+                if(sum<0) sum = 0;    
+              }
+    }
+    return maxSum;
+}
+
+2.字符串转换成整数
+思路：把字符串先换成字符数组，先判断符号，然后遍历字符数组获取字符，并计算组合成整数
+
+public class Solution{
+	public int StrToInt(String str){
+		if(str.length == 0 || str.equals("")) return 0;
+		char []a =str.toCharArray();
+		int fuhao = 0;
+		if(a[0] == '-') fuhao =1;
+		int sum = 0;
+		for(int i=fuhao;i<a.length;i++){
+			if(a[i] == '+' ) continue;
+			if(a[i]<48 || a[i]>57) return 0;
+			sum = sum*10 +a[i] -48;
+		}
+		return fuhao == 0 ? sum : sum * -1 ;
+	}
+}
+
+如果要考虑各种溢出等情况，需要考虑所有可能的测试用例，使逻辑严谨
+http://wiki.jikexueyuan.com/project/for-offer/question-forty-nine.html
+
+
+
+3.快速排序的实现：
+public int Partition(int n[],int left,int right){
+	int pivot = n[left];
+	while(left<right){
+		while(left<right && pivot<n[right]){
+			right--;
+		}
+		if(left<right) n[left]=n[right];
+		while(left<right && n[left]<pivot){
+			left++;
+		}
+		if(left<right) n[right]=n[left];
+	}
+	n[left] = pivot;
+	return left;
+}
+
+递归实现：
+public static void QuickSort(int n[],int left,int right){
+	int dp;
+	if(left<right){
+		dp = Partition(n,left,right);
+	}
+	if(right>dp) QuickSort(n,dp+1,right);
+	if(left<dp) QuickSort(n,left,dp-1);
+}
+
+非递归实现：
+public static void QuickSort(int n[],int left,int right){
+	if(a == null || left>right || left<0 || right<=0) return;
+	Stack<int> temp;
+	int i,j;
+	temp.push(right);//先存右边指针
+	temp.push(left);//再存左边指针
+	while(!temp.empty()){
+		i=temp.top();
+		temp.pop();
+		j=temp.top();
+		temp.pop();
+		if(i<j){
+			int k = Partition(n,i,j);
+			if(i<k){
+				temp.push(k-1);
+				temp.push(i);
+			}
+			if<j>k){
+				temp.push(j);
+				temp.push(k+1);
+			}
+	}
+}
+
+
+4.
+
+
+
+
+
+
