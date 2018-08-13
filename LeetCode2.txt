@@ -1,134 +1,68 @@
-﻿1.树的前序遍历（非递归）：
-public class Solution {
-    ArrayList<Integer> list = new ArrayList<Integer>();
-    public ArrayList<Integer> preorderTraversal(TreeNode root) {
-        if(root == null) return list;
-        Stack<TreeNode> stack = new Stack<TreeNode>();
-        stack.push(root);
-        while(!stack.isEmpty()){
-            TreeNode temp = stack.pop();
-            list.add(temp.val);
-            if(temp.right != null)    
-                stack.push(temp.right);   //右子树先进栈，后出栈
-            if(temp.left != null)
-                stack.push(temp.left);
-        }
-        return list;
-    }
-}
+﻿数组
 
-2.树的中序遍历（非递归）：
-public class Solution{
-    ArrayList<Integer> list = new ArrayList<Integer>();
-    public ArrayList<Integer> preorderTraversal(TreeNode root){
-        if(root == null) return list;
-	Stack<TreeNode> stack = new Stack<TreeNode>();
-        stack.push(root);
-        while(!stack.isEmpty()){
-            TreeNode temp = stack.pop();
-            list.add(temp.val);
-            if(temp.left != null)    
-                stack.push(temp.left);   //左子树先进栈，后出栈
-            if(temp.right != null)
-                stack.push(temp.right);
-        }
-        return list;
-    }
-}
+1.两数之和
+nums = [a,b,c,d,e] target = n
+如果 nums中有两个数和等于target，则返回[index1,index2]
 
-3.树的后序遍历（非递归）：
-public class Solution{
-    ArrayList<Integer> list = new ArrayList<Integer>();
-    public ArrayList<Integer> preorderTraversal(TreeNode root){
-        
-    }
-}
+解法：一遍hash，在进行迭代并将元素插入到表中的同时，我们还会回过头来检查表中是否已经存在当前元素所对应的目标元素。
+如果它存在，那我们已经找到了对应解，并立即将其返回。
 
-
-4.链表部分逆转：
-{1，2，3，4，5，6}------> {1，6，2，5，3，4}
-//快慢指针找到中间节点，将后面的链表反转（前插法），合并链表
-public class Solution {
-    public void reorderList(ListNode head) {
-        if(head==null)
-            return;
-        ListNode slow=head;
-        ListNode fast=head;
-        while(fast.next!=null&&fast.next.next!=null){
-            fast=fast.next.next;
-            slow=slow.next;
-        }
-        ListNode pre=slow.next;
-        if(pre!=null&&pre.next!=null){
-            ListNode nex=pre.next;
-            while(nex!=null){
-            pre.next=nex.next;
-            nex.next=slow.next;
-            slow.next=nex;
-            nex=pre.next;
-           }        
-        }     
-        merge(head,slow);
-    }
-    public void merge(ListNode head,ListNode slow){
-        ListNode p=head;
-        ListNode q=slow.next;
-        while(q!=null&&p!=null){
-            slow.next=q.next;
-            q.next=p.next;
-            p.next=q;
-            q=slow.next;
-            p=p.next.next;
-        }
-    }
-}
-
-4.判断二叉树是否是平衡二叉树：
-public class Solution {
-    //后续遍历时，遍历到一个节点，其左右子树已经遍历  依次自底向上判断，每个节点只需要遍历一次
-     
-    private boolean isBalanced=true;
-    public boolean IsBalanced_Solution(TreeNode root) {
-         
-        getDepth(root);
-        return isBalanced;
-    }
-    public int getDepth(TreeNode root){
-        if(root==null)
-            return 0;
-        int left=getDepth(root.left);
-        int right=getDepth(root.right);
-         
-        if(Math.abs(left-right)>1){
-            isBalanced=false;
+public int[] twoSum(int[] nums, int target) {
+    Map<Integer, Integer> map = new HashMap<>();
+    for (int i = 0; i < nums.length; i++) {
+        int complement = target - nums[i];
+        if (map.containsKey(complement)) {
+            return new int[] { map.get(complement), i };
         }
-        return right>left ?right+1:left+1;
-         
+        map.put(nums[i], i);
+    }
+    throw new IllegalArgumentException("No two sum solution");
+}
+
+2.两数相加
+l1: 3->0->7   l2:4->5->8    求307+458得到的新链表
+
+解法：
+
+public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+    ListNode dummyHead = new ListNode(0);
+    ListNode p = l1, q = l2, curr = dummyHead;
+    int carry = 0;
+    while (p != null || q != null) {
+        int x = (p != null) ? p.val : 0;
+        int y = (q != null) ? q.val : 0;
+        int sum = carry + x + y;
+        carry = sum / 10;
+        curr.next = new ListNode(sum % 10);
+        curr = curr.next;
+        if (p != null) p = p.next;
+        if (q != null) q = q.next;
+    }
+    if (carry > 0) {
+        curr.next = new ListNode(carry);
+    }
+    return dummyHead.next;
+}
+
+3.无重复字符最大字串
+
+解法：如果 s[j]s[j] 在 [i, j)[i,j) 范围内有与 j'重复的字符，我们不需要逐渐增加 i 。 
+我们可以直接跳过 [i，j′] 范围内的所有元素，并将 i 变为 j' + 1
+
+public class Solution {
+    public int lengthOfLongestSubstring(String s) {
+        int n = s.length(), ans = 0;
+        Map<Character, Integer> map = new HashMap<>(); // current index of character
+        // try to extend the range [i, j]
+        for (int j = 0, i = 0; j < n; j++) {
+            if (map.containsKey(s.charAt(j))) {
+                i = Math.max(map.get(s.charAt(j)), i);
+            }
+            ans = Math.max(ans, j - i + 1);
+            map.put(s.charAt(j), j + 1);
+        }
+        return ans;
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+​​ 
