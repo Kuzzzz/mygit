@@ -161,3 +161,57 @@ public ListNode removeNthFromEnd(ListNode head, int n) {
     second.next = second.next.next;
     return dummy.next;
 }
+
+206.反转链表
+
+public class Solution {
+    public ListNode reverseList(ListNode head) {
+        if(head == null)
+            return null;
+            
+        ListNode pReverseHead = null;
+        ListNode pNode = head;
+        ListNode pPrev = null;
+        while(pNode != null){
+            ListNode pNext = pNode.next;
+            if(pNext == null){
+                pReverseHead = pNode;
+            }   
+            pNode.next = pPrev;
+            pPrev = pNode;
+            pNode = pNext;
+        }
+        
+        return pReverseHead;
+    }    
+}
+
+92.指定位置链表逆序
+
+public ListNode reverseBetween(ListNode head, int m, int n) {
+        if (head == null || head.next == null) return head;
+        
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        ListNode prev = dummy, next = head.next;
+        
+        //  set two pointer
+        while (--m > 0) {
+            prev = prev.next;
+        }
+        while (--n > 0) {
+            next = next.next;
+        }
+
+        // reverse linklist between prev and next
+        ListNode last = prev.next;
+        ListNode curr = last.next;
+        while (curr != next) {
+            last.next = curr.next;
+            curr.next = prev.next;
+            prev.next = curr;
+            curr = last.next;
+        }
+
+        return dummy.next;
+    }
